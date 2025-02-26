@@ -1,0 +1,142 @@
+﻿@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Skoruba.IdentityServer4.STS.Identity.ViewModels.Manage.IndexViewModel
+
+<h4 class="labsoft-profile-col-center-adaptive">@Localizer["Title"]</h4>
+
+@await Html.PartialAsync("_ValidationSummary")
+
+@await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
+
+<main class="row">
+    <div class="col-lg-2 labsoft-profile-col-center-adaptive">
+        <img-gravatar email="@Model.Email" class="img-thumbnail" size="150" />
+    </div>
+    <div class="col-lg-10">
+        <form method="post">
+            <div class="labsoft-profile-agroup-columns">
+                <section>
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Username">@Localizer["UserName"]</label>
+                        <div>
+                            <input asp-for="Username" disabled />
+                            <i class="fa fa-user"></i>
+                        </div>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Email">@Localizer["Email"]</label>
+                        @if (!Model.IsEmailConfirmed)
+                        {
+                            <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["SendVerificationEmail"]</button>
+
+                        }
+                        <input type="hidden" asp-for="IsEmailConfirmed" />
+                        <div>
+                            @if (Model.IsEmailConfirmed)
+                            {
+                                <input asp-for="Email" />
+                            }
+                            else
+                            {
+                                <input asp-for="Email" class="form-control" />
+                            }
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="PhoneNumber">@Localizer["PhoneNumber"]</label>
+                        <div>
+                            <input asp-for="PhoneNumber" />
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Name">@Localizer["Name"]</label>
+                        <div>
+                            <input asp-for="Name"  />
+                            <i class="fa fa-user-circle"></i>
+                        </div>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Website">@Localizer["Website"]</label>
+                        <div>
+                            <input asp-for="Website"  />
+                            <i class="fa fa-globe"></i>
+                        </div>
+                        <span asp-validation-for="Website" class="text-danger"></span>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Profile">@Localizer["Profile"]</label>
+                        <div>
+                            <input asp-for="Profile" />
+                            <i class="fa fa-link"></i>
+                        </div>
+                        <span asp-validation-for="Profile" class="text-danger"></span>
+                    </div>
+                </section>
+
+                <section>
+                    
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="StreetAddress">@Localizer["StreetAddress"]</label>
+                        <div>
+                            <input asp-for="StreetAddress"  />
+                            <i class="fa fa-home"></i>
+                        </div>
+                        <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Locality">@Localizer["Locality"]</label>
+                        <div>
+                            <input asp-for="Locality"  />
+                            <i class="fa fa-map"></i>
+                        </div>
+                        <span asp-validation-for="Locality" class="text-danger"></span>
+                    </div>
+                  
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Region">@Localizer["Region"]</label>
+                        <div>
+                            <input asp-for="Region" />
+                            <i class="fa fa-map-pin"></i>
+                        </div>
+                        <span asp-validation-for="Region" class="text-danger"></span>
+                    </div>
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="PostalCode">@Localizer["PostalCode"]</label>
+                        <div>
+                            <input asp-for="PostalCode"  />
+                            <i class="fa fa-street-view"></i>
+                        </div>
+                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="labsoft-profile-agroup-input-text">
+                        <label asp-for="Country">@Localizer["Country"]</label>
+                        <div>
+                            <input asp-for="Country" />
+                            <i class="fa fa-flag"></i>
+                        </div>
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="labsoft-profile-agroup-button-save">
+                        <button type="submit" class="labsoft-profile-button-primary">
+                            <i class="fa fa-save"></i>@Localizer["Save"]
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</main>

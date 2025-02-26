@@ -1,0 +1,956 @@
+/* 
+To maintain your CSS standard, use the rules exemplified below!
+.labsoft-namePage-nameClass{...}
+.labsoft-{...}
+*/
+
+.labsoft-aws-icon{
+    background-image: url("../../images/aws-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.6rem;
+    height: 1.4rem;
+}
+.labsoft-google-cloud-icon{
+    background-image: url("../../images/google-cloud-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.6rem;
+    height: 1.4rem;
+}
+.labsoft-azure-icon{
+    background-image: url("../../images/azure-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.6rem;
+    height: 1.4rem;
+}
+
+.labsoft-home-container{
+    width: 100vw;
+    height: 100vh;
+}
+.labsoft-home-image-logo{
+    width: 120px; 
+    height: 15px;
+    z-index: 2;
+    position: absolute;
+    top: 5vh;
+    left: 2vw;
+}
+.labsoft-home-container > h1 {
+    position: absolute;
+    top: 15vh;
+    z-index: 2;
+    left: 2vw;
+}
+.labsoft-home-imageWrapper{
+    position: absolute;
+    background-image: url("../../images/labsoft-background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+.labsoft-home-section-container{
+    width: 50%;
+    height: 100vh;
+    background-color: #fff;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.625rem;
+}
+.labsoft-home-card-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.labsoft-home-card{
+    width: 50%;
+    height: 25vh;
+    background: #FFFFFF;
+    box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 0.4rem;
+    padding-bottom: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.labsoft-home-info-card{
+    width: 90%;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    align-items: flex-start;
+}
+.labsoft-home-info-card > p {
+    text-align: justify;
+}
+
+.labsoft-home-info-card-icon-adaptation{
+    color: #1b51e5; 
+    font-size: 1.2rem; 
+    margin-top: 4px;
+}
+
+.labsoft-home-container-select-language,
+.labsoft-login-container-select-language{
+    margin-top: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+.labsoft-home-select-language-button-br,
+.labsoft-home-select-language-button-es,
+.labsoft-home-select-language-button-en{
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0px;
+    outline: none;
+    width: 26px;
+    height: 22px;
+}
+.labsoft-home-select-language-button-br{
+    background-image: url("../../images/flag-br.png");
+}
+.labsoft-home-select-language-button-es{
+    background-image: url("../../images/flag-es.png");
+}
+.labsoft-home-select-language-button-en{
+    background-image: url("../../images/flag-en.png");
+}
+
+.labsoft-home-card-button-primary{
+    width: 90%;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    
+    border-radius: 6px;
+
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-home-card-button-primary:hover{
+    color: #fff !important;
+    text-decoration: none !important;
+}
+.labsoft-home-card-button-secondary{
+    width: 90%;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    
+    border-radius: 6px;
+
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #5E81F4;
+}
+.labsoft-home-card-button-secondary:hover{
+    color: #000 !important;
+    text-decoration: none !important;
+}
+.labsoft-home-footer-by{
+    color: rgb(129, 129, 165);
+    opacity: 0.7;
+    font-size: 0.875rem;
+    text-align: center;
+}
+.labsoft-home-section-container > .labsoft-home-footer-by{
+    position: relative;
+    top: 20vh;
+}
+
+.labsoft-login-section-container{
+    width: 50%;
+    height: 100vh;
+    background-color: #fff;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+}
+.labsoft-login-section-container > form{
+    margin-top: 12rem
+}
+.labsoft-login-fieldset{
+    display: flex;
+    flex-direction: column;
+    padding: 0.4rem;
+    gap: 1rem;
+    align-items: center;
+}
+.labsoft-login-fieldset > .labsoft-login-remember-login {
+    width: 380px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-start;
+}
+.labsoft-login-fieldset > .labsoft-login-remember-login > span {
+    margin-bottom: 2px;
+}
+.labsoft-login-title-and-subtitle{
+    position: absolute;
+    top: 20vh;
+    z-index: 2;
+    width: 50vw;
+    text-align: center;
+}
+.labsoft-login-title-and-subtitle > h5 {
+    color: rgba(143, 140, 140, 1);
+    font-size: 0.85rem;
+    text-align: center;
+}
+.labsoft-login-agroup-input-text > span {
+    color: #D0D0D0;
+    font-size: 0.875rem;
+}
+.labsoft-login-agroup-input-text > div > input {
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 360px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.labsoft-login-agroup-input-text > div > input::placeholder{
+    color: #D0D0D0;
+}
+.labsoft-login-agroup-input-text > div > i{
+    position: relative;
+    color: #D0D0D0;
+    left: -25px;
+}
+.labsoft-login-agroup-buttons-access{
+    width: 380px;
+    gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.labsoft-login-button-primary{
+    width: 50%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-login-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+  .labsoft-login-button-primary:disabled {
+    background-color: #a1b5f6;
+    cursor: not-allowed;
+  }
+.labsoft-login-button-secondary{
+    width: 50%;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #5E81F4;
+}
+.labsoft-login-button-secondary:hover{
+    color: #000;
+    text-decoration: none !important;
+}
+.labsoft-login-external-login-button-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.2rem;
+    gap: 1rem;
+}
+.labsoft-login-external-login-button{
+    width: 2.6rem;
+    height: 2.4rem;
+    outline: none !important;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #d0d0d0;
+    padding: 0.4rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.labsoft-login-footer-by{
+    color: rgb(129, 129, 165);
+    opacity: 0.7;
+    font-size: 0.875rem;
+    text-align: center;
+}
+.labsoft-login-section-container > .labsoft-login-footer-by{
+    position: relative;
+    top: 5vh;
+}
+.labsoft-default-button-admin{
+    /* referring to the componentization of the admin button, which is found at: Components\IdentityServerAdminLink */
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 0.5rem;
+    color: #000 !important;
+    text-decoration: none !important;
+}
+.labsoft-default-button-admin > i {
+    margin-right: 0.3rem;
+    color: #0074B6;
+}
+.labsoft-layout-button-header-nav {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 0.5rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    gap: 0.3rem;
+
+    outline: none;
+    border: 0px;
+}
+.labsoft-layout-button-header-nav > i[class="fa fa-cog"]{
+    color: #0074B6;
+}
+.labsoft-layout-header-nav-logout{
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 0.5rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #0074B6;
+    text-decoration: none;
+}
+
+.labsoft-home-title-panel{
+    width: 100%;
+    color: #000;
+    line-height: 2.625rem;
+    text-align: center;
+    letter-spacing: 0.125rem;
+    margin-bottom: 4vh;
+}
+.labsoft-home-title-panel > h1{
+    width: 100%;
+    color: #5588EE;
+}
+.labsoft-home-card-panel-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+.labsoft-home-card-panel-info-card{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.labsoft-home-card-panel-info-card > span {
+    text-align: justify;
+    color: #585858;
+}
+.labsoft-home-card-panel-button-a{
+    width: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    background: rgba(94, 129, 244, 0.04);
+    border: 1px solid #BCDAEB;
+    border-radius: 6px;
+    
+    padding: 0.5rem;
+    color: #585858;
+    transition: 0.1s ease-in;
+}
+.labsoft-home-card-panel-button-a:hover{
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #0074B6;
+}
+.labsoft-profile-col-center-adaptive > .img-thumbnail{
+    border-radius: 1.25rem !important;
+}
+.labsoft-profile-agroup-columns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.labsoft-profile-agroup-columns > section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.labsoft-profile-agroup-input-text > label {
+    color: rgba(114, 114, 114, 1);
+    font-size: 0.875rem;
+}
+.labsoft-profile-agroup-input-text > div > input {
+    color: rgba(177, 174, 174, 1);
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 360px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.labsoft-profile-agroup-input-text > div > input::placeholder{
+    color: #D0D0D0;
+}
+.labsoft-profile-agroup-input-text > div > input:disabled{
+    cursor: not-allowed;
+}
+.labsoft-profile-agroup-input-text > div > i{
+    position: relative;
+    color: #D0D0D0;
+    left: -25px;
+}
+.labsoft-profile-button-primary{
+    width: 50%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-profile-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.labsoft-profile-agroup-button-save{
+    width: 360px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 2vh;
+}
+.labsoft-forgotPassword-logo{
+    width: 120px; 
+    height: 15px;
+    z-index: 2;
+    position: absolute;
+    top: 5vh;
+    left: 2vw;
+}
+.labsoft-forgotPassword-imageWrapper{
+    position: absolute;
+    background-image: url("../../images/labsoft-background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+.labsoft-home-forgotPassword-logo{
+    width: 120px; 
+    height: 15px;
+    z-index: 2;
+    position: absolute;
+    top: 5vh;
+    left: 2vw;
+}
+.labsoft-forgotPassword-title-and-subtitle{
+    position: absolute;
+    top: 20vh;
+    z-index: 2;
+    width: 50vw;
+    text-align: center;
+}
+.labsoft-forgotPassword-title-and-subtitle > h5 {
+    color: rgba(143, 140, 140, 1);
+    font-size: 0.85rem;
+    text-align: center;
+}
+.labsoft-forgotPassword-section-container{
+    width: 50%;
+    height: 100vh;
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.labsoft-forgotPassword-section-container > form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 7vh;
+    align-items: center;
+}
+.labsoft-forgotPassword-choosePolicy-group{
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.4rem;
+}
+.labsoft-forgotPassword-choosePolicy-group > label{
+    margin-left: 0.2rem;
+}
+.labsoft-forgotPassword-agroup-input-text{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.8vh;
+}
+.labsoft-forgotPassword-agroup-input-text > label {
+    color: #D0D0D0;
+    font-size: 0.875rem;
+}
+.labsoft-forgotPassword-agroup-input-text > div > input {
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 360px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.labsoft-forgotPassword-agroup-input-text > div > input::placeholder{
+    color: #D0D0D0;
+}
+.labsoft-forgotPassword-agroup-input-text > div > i{
+    position: relative;
+    color: #D0D0D0;
+    left: -25px;
+}
+.labsoft-forgotPassword-button-secondary{
+    width: 360px;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #5E81F4;
+    outline: none !important;
+}
+.labsoft-forgotPassword-button-secondary:hover{
+    color: #000;
+}
+.labsoft-forgotPassword-footer-by{
+    width: 50%;
+    color: rgb(129, 129, 165);
+    opacity: 0.7;
+    font-size: 0.875rem;
+    text-align: center;
+    position: absolute;
+    bottom: 5vh;
+}
+.labsoft-twoFactorAuthentication-section-container{
+    margin-top: 5vh;
+}
+.labsoft-twoFactorAuthentication-button-primary{
+    width: 50%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-twoFactorAuthentication-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.labsoft-twoFactorAuthentication-button-secondary{
+    width: 50%;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #5E81F4;
+}
+.labsoft-twoFactorAuthentication-button-secondary:hover{
+    color: #000;
+    text-decoration: none !important;
+}
+.labsoft-twoFactorAuthentication-card-agroup-buttons{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    justify-content: space-around;
+}
+
+.labsoft-twoFactorAuthentication-card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+.labsoft-twoFactorAuthentication-card-info-card{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    /* justify-content: center; */
+    justify-content: start;
+    gap: 0.5rem;
+}
+.labsoft-twoFactorAuthentication-card-info-card > span {
+    text-align: justify;
+    color: #585858;
+}
+.labsoft-twoFactorAuthentication-card-info-card > i {
+    color: #1b51e5;
+    font-size: 1.2rem; 
+    margin-top: 4px;
+}
+.labsoft-enableAuthenticator-button-primary{
+    width: 50%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-enableAuthenticator-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.labsoft-changePassword-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+.labsoft-changePassword-agroup-input-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+.labsoft-changePassword-agroup-input-text > div > input {
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 360px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.labsoft-changePassword-agroup-input-text > div > input::placeholder{
+    color: #D0D0D0;
+}
+.labsoft-changePassword-agroup-input-text > div > i{
+    position: relative;
+    color: #D0D0D0;
+    left: -25px;
+}
+.labsoft-changePassword-button-primary{
+    width: 100%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-changePassword-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.labsoft-logout-aside-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    flex-direction: column;
+}
+.labsoft-logout-button-primary{
+    width: 100%;
+    outline: none !important;
+    border: none;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    background-color: #5E81F4;
+    color: #fff;
+}
+.labsoft-logout-button-primary:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.labsoft-loggedOut-main-container{
+    height: 50vh;
+    margin-top: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+@media (max-width: 1275px){
+    .labsoft-home-card-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    .labsoft-home-card{
+        width: 90%;
+        height: auto;
+    }
+    .labsoft-home-info-card{
+        width: 90%;
+    }
+    .labsoft-login-section-container{
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@media(max-width: 995px){
+    
+    .labsoft-profile-agroup-columns{
+        flex-direction: column;
+    }
+    .labsoft-profile-agroup-input-text > div > input{
+        width: 90%;
+    }
+    .labsoft-profile-agroup-button-save {
+        width: 90%;
+    }
+}
+@media (max-width: 890px) {
+    .labsoft-login-title-and-subtitle{
+        width: 100vw;
+    }
+    .labsoft-login-title-and-subtitle > h1{
+        color: #fff;
+    }
+    .labsoft-home-section-container > .labsoft-home-footer-by{
+        position: relative;
+        top: 2.5vh;
+    }
+    .labsoft-home-image-logo{
+        display: none
+    }
+    .labsoft-home-container > h1 {
+        text-align: center;
+        color: #fff;
+        width: 95vw;
+    }
+    .labsoft-home-section-container{
+        width: 100%;
+        height: 50vh;
+        top: 50vh;
+        overflow: auto;
+        gap: 0.4rem;
+        padding: 0;
+        justify-content: center;
+        border-radius: 6px 6px 0px 0px;
+    }
+    .labsoft-home-card-container{
+        gap: 1rem;
+    }
+    .labsoft-home-card{
+        padding: 1rem;
+    }
+    .labsoft-login-section-container{
+        width: 100%;
+        height: 50vh;
+        top: 50vh;
+        overflow: auto;
+        gap: 0.4rem;
+        padding: 0;
+        justify-content: center;
+        border-radius: 6px 6px 0px 0px;
+    }
+    .labsoft-login-section-container > form{
+        margin-top: 3rem;
+        width: 98%;
+    }
+    .labsoft-login-agroup-input-text > div > input {
+        
+        width: 85vw;
+    }
+    .labsoft-login-section-container > .labsoft-login-footer-by {
+        top: 2vh;
+    }
+    .labsoft-login-fieldset > .labsoft-login-remember-login{
+        width: 95%;
+    }
+    .labsoft-login-agroup-buttons-access{
+        width: 95%;
+    }
+    .labsoft-home-title-panel{
+        margin-bottom: 5vh;
+    }
+    .labsoft-home-title-panel > h1, h2{
+        font-size: 1.7rem !important;
+    }
+    .labsoft-home-card-deck-adaptive{
+        flex-direction: column !important;
+    }
+    .labsoft-profile-col-center-adaptive{
+        display: flex;
+        justify-content: center;
+    }
+    .labsoft-profile-agroup-columns{
+        margin-top: 2vh;
+        align-items: center;        
+    }
+    .labsoft-profile-agroup-columns > section{
+        width: 90%;
+    }
+    .labsoft-forgotPassword-logo{
+        display: none;
+    }
+    .labsoft-forgotPassword-title-and-subtitle{
+        width: 100%;
+    }
+    .labsoft-forgotPassword-title-and-subtitle > h1{
+        color: #fff;
+    }
+    .labsoft-forgotPassword-section-container{
+        width: 100%;
+        height: 50vh;
+        top: 50vh;
+    }
+    .labsoft-forgotPassword-section-container > form {
+        margin-top: 0.2vh;
+        margin-bottom:  45px;
+        margin-left: 10vw;
+        overflow: auto;
+        
+    }
+    .labsoft-forgotPassword-choosePolicy-group{
+        width: 90vw;
+    }
+    .labsoft-forgotPassword-adaptive{
+        width: 90vw;
+    }
+    .labsoft-forgotPassword-agroup-input-text > div {
+        width: 90vw;
+    }
+    .labsoft-forgotPassword-agroup-input-text > div > input{
+        width: 80vw;
+    }
+    .labsoft-forgotPassword-button-secondary{
+        width: 80vw;
+    }
+    .labsoft-forgotPassword-footer-by{
+        width: 100vw;
+    }
+    .labsoft-twoFactorAuthentication-card-agroup-buttons{
+        width: 95vw;
+        flex-direction: column;
+    }
+    .labsoft-twoFactorAuthentication-button-primary,
+    .labsoft-twoFactorAuthentication-button-secondary{
+        width: 70%;
+        font-size: 0.8rem;
+    }
+    .labsoft-changePassword-agroup-input-text > div {
+        width: 90vw;
+    }
+    .labsoft-changePassword-agroup-input-text > div > input{
+        width: 80vw;
+        margin-left: 5vw;
+    }
+}
+@media(max-width: 280px){
+    .labsoft-home-card-container{
+        margin-top: 130px;
+    }
+    .labsoft-home-info-card{
+        font-size: 0.75rem;
+    }
+    .labsoft-home-card-button-primary, .labsoft-home-card-button-secondary{
+        font-size: 0.80rem;
+    }
+    .labsoft-login-agroup-buttons-access{
+        font-size: 0.8rem;
+        gap: 0.4rem;
+        width: 100%;
+    }
+}
+@media (max-height: 667px){
+    .labsoft-home-card-container{
+        margin-top: 70px;
+    }
+}
+@media (max-height: 600px){
+    .labsoft-home-card-container{
+        margin-top: 140px;
+    }
+}
+@media (max-height: 430px){
+    .labsoft-login-section-container > form{
+        overflow: auto;
+    }
+}

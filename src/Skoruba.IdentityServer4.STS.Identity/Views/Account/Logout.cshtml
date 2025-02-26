@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model Skoruba.IdentityServer4.STS.Identity.ViewModels.Account.LogoutViewModel
+
+<main class="logout-container">
+	<section class="card mb-4 box-shadow"  style="padding: 1rem; overflow: auto;">
+
+		<aside class="labsoft-logout-aside-container">
+				<p>@Localizer["Message"]</p>
+				
+				<form asp-action="Logout">
+					<input type="hidden" name="logoutId" value="@Model.LogoutId" />
+					<fieldset>
+						<div class="form-group">
+							<button class="labsoft-logout-button-primary"><i class="fa fa-power-off"></i>@Localizer["Yes"]</button>
+						</div>
+					</fieldset>
+				</form>
+		</aside>
+	</section>
+</main>

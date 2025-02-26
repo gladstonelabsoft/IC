@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "Validation",
+    "Projects": [
+      {
+        "Path": "src\\Skoruba.IdentityServer4.Admin\\Skoruba.IdentityServer4.Admin.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\Skoruba.IdentityServer4.STS.Identity\\Skoruba.IdentityServer4.STS.Identity.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\Skoruba.IdentityServer4.Admin.Api\\Skoruba.IdentityServer4.Admin.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

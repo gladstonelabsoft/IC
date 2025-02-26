@@ -1,0 +1,87 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Skoruba.IdentityServer4.STS.Identity.Configuration.Interfaces
+@using Skoruba.IdentityServer4.STS.Identity.Helpers.Localization
+@inject IViewLocalizer Localizer
+@model Skoruba.IdentityServer4.STS.Identity.ViewModels.Account.LoginViewModel
+@inject IRootConfiguration RootConfiguration
+
+@if (Model.EnableLocalLogin)
+{
+    <main>
+            @await Html.PartialAsync("_CaptchaPreScript")
+            <section class="labsoft-home-imageWrapper"></section>
+            
+            <img src="@UrlHelper.Content(RootConfiguration.AdminConfiguration.LabsoftLogoUri)"  class="labsoft-home-image-logo" alt="Labsoft logo">
+            
+            <div class="labsoft-login-title-and-subtitle">
+                <h1>@Localizer["PlatformTitle"]</h1> 
+                <h5>@Localizer["BriefDescriptionToAccess"]</h5>
+            </div>
+
+            <section class="labsoft-login-section-container">
+                <form asp-route="Login" >
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    
+                    <fieldset class="labsoft-login-fieldset">
+                        <div class="labsoft-login-agroup-input-text">
+                            <span  id="input-username">@Localizer["Username"]:</span>
+                            <div>
+                                <input type="text" placeholder="@Localizer[LoginPolicyResolutionLocalizer.GetUserNameLocalizationKey(Model.LoginResolutionPolicy)]" asp-for="Username" aria-label="Username" aria-describedby="input-username" autofocus>
+                                <i class="fa fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="labsoft-login-agroup-input-text">
+                            <span  id="input-password">@Localizer["Password"]:</span>
+                            <div>
+                                <input type="password"  placeholder="@Localizer["Password"]" aria-label="Password" aria-describedby="input-password" asp-for="Password" autocomplete="off">
+                                <i class="oi oi-lock-locked"></i>
+                            </div>
+                        </div>
+                        @if (Model.AllowRememberLogin)
+                        {   
+                            <aside class="labsoft-login-remember-login">
+                                <toggle-button>
+                                    <input asp-for="RememberLogin" type="checkbox">
+                                </toggle-button>
+                                <span>@Localizer["Remember"]</span>
+                            </aside>
+                        }
+                        <input type="hidden" asp-for="PreviousFormState" value="@ViewData.ModelState.IsValid">
+                        @await Html.PartialAsync("_CaptchaValidator")
+                        <aside class="labsoft-login-agroup-buttons-access">
+                            <button class="labsoft-login-button-primary"  name="button" id="loginbtn" value="login">@Localizer["Login"]</button>
+                            <a asp-action="ForgotPassword" asp-controller="Account" asp-route-requesterClient="@Model.RequesterClient" class="labsoft-login-button-secondary" value="forgot">@Localizer["Forgot"]</a>
+                        </aside>
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                @foreach (var error in ViewData.ModelState[""].Errors)
+                                {
+                                    @error.ErrorMessage<br/>
+                                }
+                            </div>
+                        }
+                </fieldset>
+                </form>
+                @await Html.PartialAsync("_CaptchaPosScript")
+                <div class="labsoft-login-container-select-language">
+                    @{
+                        var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
+                    }
+                    <form 
+                            id="selectLanguage" 
+                            asp-controller="Home"
+                            asp-action="SetLanguage"
+                            asp-route-returnUrl="@returnUrl"
+                            method="post" 
+                            role="form"
+                    >
+                        <button name="culture"  asp-for="pt" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-br"  type="submit" value="pt"/>
+                        <button name="culture"  asp-for="es" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-es"  type="submit" value="es"/>
+                        <button name="culture"  asp-for="en" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-en" type="submit"  value="en"/>
+                    </form>
+                </div>
+                <span class="labsoft-login-footer-by">@Localizer["PoweredBy"]</span>
+            </section>
+    </main>
+}

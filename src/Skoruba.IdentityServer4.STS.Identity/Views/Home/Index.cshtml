@@ -1,0 +1,135 @@
+﻿@using IdentityServer4.Extensions
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Skoruba.IdentityServer4.STS.Identity.Configuration.Interfaces
+@inject IViewLocalizer Localizer
+@inject IRootConfiguration RootConfiguration
+
+@if (!User.IsAuthenticated())
+{
+    <main class="labsoft-home-container">
+            <section class="labsoft-home-imageWrapper"></section>
+            
+            <img src="@UrlHelper.Content(RootConfiguration.AdminConfiguration.LabsoftLogoUri)"  class="labsoft-home-image-logo" alt="Labsoft logo">
+
+        <h1>@Localizer["SubTitle", ""]<br />@Localizer["ProjectName"]</h1>
+
+        <section class="labsoft-home-section-container">
+                <nav class="labsoft-home-card-container">
+                    <div class="labsoft-home-card">
+                        <div class="labsoft-home-info-card">
+                            <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                            <p>@Localizer["LoginInstructions"]</p>
+                        </div>
+
+                        <a asp-controller="Account" asp-action="Login" class="labsoft-home-card-button-primary"><i class="fa fa-lock"></i>@Localizer["Login"]</a>
+                    </div>
+                    
+                    <div class="labsoft-home-card">
+                        <div class="labsoft-home-info-card">
+                            <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                            <p>@Localizer["DiscoveryDocumentCardInformation"]</p>
+                        </div>
+
+                        <a href="~/.well-known/openid-configuration"  class="labsoft-home-card-button-secondary"><i class="fa fa-laptop"></i>@Localizer["Discovery"]</a>
+                    </div>
+                </nav>
+
+                <div class="labsoft-home-container-select-language">
+                    @{
+                        var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
+                    }
+                    <form 
+                            id="selectLanguage" 
+                            asp-controller="Home"
+                            asp-action="SetLanguage"
+                            asp-route-returnUrl="@returnUrl"
+                            method="post" 
+                            role="form"
+                    >
+                        <button name="culture"  asp-for="pt" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-br"  type="submit" value="pt"/>
+                        <button name="culture"  asp-for="es" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-es"  type="submit" value="es"/>
+                        <button name="culture"  asp-for="en" asp-items="cultureItems" onclick="this.form.submit()" class="labsoft-home-select-language-button-en" type="submit"  value="en"/>
+                    </form>
+                </div>
+                <span class="labsoft-home-footer-by">@Localizer["PoweredBy"]</span>
+            </section>
+    </main>
+}
+
+@if (User.IsAuthenticated())
+{
+<section class="labsoft-home-title-panel">
+        <h2>
+        @Localizer["WelcomeTitleHome"]
+        </h2>
+        <h1>@Localizer["ProjectName"]</h1>
+</section>
+
+<div class="card-deck mb-3 text-center labsoft-home-card-deck-adaptive">
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["GrantsCardInformation"]</span>
+                </div>
+                <a asp-controller="Grants" asp-action="Index" class="labsoft-home-card-panel-button-a"><i class="fa fa-shield"></i>@Localizer["Grants"]</a>
+            </aside>
+        </div>
+
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["DiscoveryCardInformation"]</span>
+                </div>
+                <a href="~/.well-known/openid-configuration" class="labsoft-home-card-panel-button-a"><i class="fa fa-laptop"></i>@Localizer["Discovery"]</a>
+            </aside>
+        </div>
+
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["ManageProfileCardInformation"]</span>
+                </div>
+                <a asp-controller="Manage" asp-action="Index"  class="labsoft-home-card-panel-button-a"><i class="fa fa-user"></i>@Localizer["ManageProfile"]</a>
+            </aside>
+        </div>
+</div>
+}
+@if (User.IsAuthenticated())
+{
+    <div class="card-deck mb-3 text-center labsoft-home-card-deck-adaptive">
+
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["ManagePersonalDataCardInformation"]</span>
+                </div>
+                <a asp-controller="Manage" asp-action="PersonalData"  class="labsoft-home-card-panel-button-a"><i class="oi oi-cloud-download"></i>@Localizer["ManagePersonalData"]</a>
+            </aside>
+        </div>        
+       
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["TwoFactorAuthenticationCardInformation"]</span>
+                </div>
+                <a asp-controller="Manage" asp-action="TwoFactorAuthentication"  class="labsoft-home-card-panel-button-a"><i class="oi oi-phone"></i>@Localizer["2FA"]</a>
+            </aside>
+        </div>   
+
+        <div class="card mb-4 box-shadow">
+            <aside class="labsoft-home-card-panel-container">
+                <div class="labsoft-home-card-panel-info-card" style="justify-content: flex-start !important;">
+                    <i class="fa fa-info-circle labsoft-home-info-card-icon-adaptation" ></i>
+                    <span>@Localizer["ChangePasswordCardInformation"]</span>
+                </div>
+                <a asp-controller="Manage" asp-action="ChangePassword" class="labsoft-home-card-panel-button-a"><i class="oi oi-pencil"></i>@Localizer["ChangePassword"]</a>
+            </aside>
+        </div>        
+
+    </div>
+} 

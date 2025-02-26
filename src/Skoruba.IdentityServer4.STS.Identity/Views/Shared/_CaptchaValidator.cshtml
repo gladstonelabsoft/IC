@@ -1,0 +1,7 @@
+﻿@using Skoruba.IdentityServer4.STS.Identity.Configuration.Interfaces
+@inject IRootConfiguration RootConfiguration
+
+@if (ViewData.ModelState.IsValid == false && RootConfiguration.CaptchaConfiguration.Provider == "GoogleReCaptchaV2")
+{
+  <div class="g-recaptcha" data-sitekey="@RootConfiguration.CaptchaConfiguration.SiteKey" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired"></div>
+}

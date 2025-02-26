@@ -1,0 +1,25 @@
+﻿@using Skoruba.IdentityServer4.STS.Identity.Configuration.Interfaces
+@inject IRootConfiguration RootConfiguration
+
+@if (ViewData.ModelState.IsValid == false && RootConfiguration.CaptchaConfiguration.Provider == "GoogleReCaptchaV2")
+{
+  <script>
+    function recaptchaCallback() {
+      document.getElementById("loginbtn").disabled = false;
+      window.recaptchaValidado = true;
+      console.log("reCAPTCHA validado com sucesso!");
+    }
+
+    function recaptchaExpired() {
+      document.getElementById("loginbtn").disabled = true;
+      window.recaptchaValidado = false;
+      console.log("reCAPTCHA expirado!");
+    }
+
+    window.addEventListener('load', function () {
+      console.log('A página foi completamente carregada!');
+      recaptchaExpired();
+    });
+    
+  </script>
+}    

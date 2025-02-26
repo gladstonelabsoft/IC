@@ -1,0 +1,33 @@
+﻿{
+    "Serilog": {
+        "MinimumLevel": {
+            "Default": "Error",
+            "Override": {
+                "Skoruba": "Information"
+            }
+        },
+        "WriteTo": [
+            {
+                "Name": "Console"
+            },
+            {
+                "Name": "File",
+                "Args": {
+                    "path": "Log/skoruba_admin.txt",
+                    "rollingInterval": "Day"
+                }
+            },
+            {
+                "Name": "MSSqlServer",
+              "Args": {
+                "connectionString": "Server=127.0.0.1;Port=5432;Database=IdentityServer4Admin;Uid=postgres;Pwd=root;Include Error Detail=true;",
+                "tableName": "Log",
+                "columnOptionsSection": {
+                  "addStandardColumns": [ "LogEvent" ],
+                  "removeStandardColumns": [ "Properties" ]
+                }
+              }
+            }
+        ]
+    }
+}
