@@ -579,30 +579,20 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
         {
             try
             {
-                // Find existing user
-                var user = await _userManager.FindByEmailAsync(request.Email);
-                if (user == null)
-                    return NotFound(new ApiError($"User with email {request.Email} not found"));
-
+                // Find and validate user
+                var user = await FindUserByEmailAsync(request.Email);
+                
                 // Generate temporary password
                 var tempPassword = GenerateSecurePassword();
                 
                 // Delete existing user
-                var deleteResult = await _userManager.DeleteAsync(user);
-                if (!deleteResult.Succeeded)
-                    return BadRequest(new ApiError("Failed to reset user account"));
+                await DeleteUserAsync(user);
 
-                // Create new user
-                var newUser = new UserIdentity
-                {
-                    UserName = request.Email,
-                    Email = request.Email,
-                    EmailConfirmed = true
-                };
+                // Create new user with same email
+                var newUser = await CreateUserWithPasswordAsync(request.Email, tempPassword);
 
-                var createResult = await _userManager.CreateAsync(newUser, tempPassword);
-                if (!createResult.Succeeded)
-                    return BadRequest(new ApiError("Failed to create new user account"));
+                // Set password expiration
+                await SetPasswordExpirationAsync(newUser);
 
                 // Send email with temporary password
                 await _emailSender.SendEmailAsync(
@@ -620,12 +610,71 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             }
         }
 
+        private async Task<TUser> FindUserByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new InvalidOperationException($"User with email {email} not found");
+            return user;
+        }
+
+        private async Task DeleteUserAsync(TUser user)
+        {
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+                throw new InvalidOperationException($"Failed to delete user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+        }
+
+        private async Task<TUser> CreateUserWithPasswordAsync(string email, string password)
+        {
+            var newUser = new TUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
+
+            var result = await _userManager.CreateAsync(newUser, password);
+            if (!result.Succeeded)
+                throw new InvalidOperationException($"Failed to create user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+
+            return newUser;
+        }
+
         private string GenerateSecurePassword()
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+            const string uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+            const string numericChars = "0123456789";
+            const string specialChars = "!@#$%^&*";
+
             var random = new Random();
-            return new string(Enumerable.Repeat(chars, 12)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            var password = new StringBuilder();
+
+            // Ensure at least one of each type
+            password.Append(uppercaseChars[random.Next(uppercaseChars.Length)]);
+            password.Append(lowercaseChars[random.Next(lowercaseChars.Length)]);
+            password.Append(numericChars[random.Next(numericChars.Length)]);
+            password.Append(specialChars[random.Next(specialChars.Length)]);
+
+            // Fill remaining length with random chars
+            var allChars = uppercaseChars + lowercaseChars + numericChars + specialChars;
+            for (int i = 4; i < 16; i++)
+            {
+                password.Append(allChars[random.Next(allChars.Length)]);
+            }
+
+            // Shuffle the password
+            return new string(password.ToString().ToCharArray().OrderBy(x => random.Next()).ToArray());
+        }
+
+        private async Task SetPasswordExpirationAsync(TUser user)
+        {
+            var expirationClaim = new Claim("PasswordExpiration", 
+                DateTime.UtcNow.AddHours(1).ToString("O"), 
+                ClaimValueTypes.DateTime);
+
+            await _userManager.AddClaimAsync(user, expirationClaim);
         }
     }
 }
