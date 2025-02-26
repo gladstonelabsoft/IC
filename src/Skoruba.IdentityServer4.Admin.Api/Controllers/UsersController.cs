@@ -581,29 +581,62 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
         {
             try
             {
-                // Find and validate user
-                var user = await FindUserByEmailAsync(request.Email);
-
-                // Generate reset token and URL
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var resetLink = $"{Request.Scheme}://{Request.Host}/reset-password?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(user.Email)}";
-
-                // Generate email content
-                var emailSubject = ApiTranslateResource.ResetPasswordTitle;
-                var emailBody = EmailTemplates.GetPasswordResetTemplate(resetLink);
+                if (string.IsNullOrWhiteSpace(request.Email) || !IsValidEmail(request.Email))
+                {
+                    _logger.LogWarning("Invalid email format provided for password reset");
+                    return BadRequest(new { error = "Invalid email format" });
+                }
 
                 try 
                 {
+                    var user = await FindUserByEmailAsync(request.Email);
+                    if (user == null)
+                    {
+                        // Return 200 for security - don't reveal if email exists
+                        _logger.LogInformation("Password reset requested for non-existent email: {Email}", request.Email);
+                        return Ok("If your email is registered, you will receive password reset instructions.");
+                    }
+
+                    if (await _userManager.IsLockedOutAsync(user))
+                    {
+                        _logger.LogWarning("Password reset attempted for locked account: {Email}", request.Email);
+                        return Ok("If your email is registered, you will receive password reset instructions.");
+                    }
+
+                    // Generate reset token and URL using HTTPS
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetLink = $"https://{Request.Host}/reset-password?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(user.Email)}";
+
+                    // Generate email content
+                    var emailSubject = ApiTranslateResource.ResetPasswordTitle;
+                    var emailBody = EmailTemplates.GetPasswordResetTemplate(resetLink);
+
                     await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
                     _logger.LogInformation("Password reset email sent to {Email}", user.Email);
+
+                    return Ok("If your email is registered, you will receive password reset instructions.");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    _logger.LogError(ex, "User management error during password reset for {Email}", request.Email);
+                    return StatusCode(500, new { error = "An error occurred processing your request" });
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to send password reset email to {Email}", user.Email);
-                    throw new UserFriendlyErrorPageException("Failed to send password reset email. Please try again later.");
+                    _logger.LogError(ex, "Unexpected error during password reset for {Email}", request.Email);
+                    return StatusCode(500, new { error = "An error occurred processing your request" });
                 }
 
-                return Ok("Password reset email sent successfully");
+                private bool IsValidEmail(string email)
+                {
+                    try {
+                        var addr = new System.Net.Mail.MailAddress(email);
+                        return addr.Address == email;
+                    }
+                    catch {
+                        return false;
+                    }
+                }
             }
             catch (Exception ex)
             {

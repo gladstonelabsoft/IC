@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Skoruba.IdentityServer4.Admin.Api.Dtos.Users;
 using Skoruba.IdentityServer4.Admin.Api.IntegrationTests.Common;
@@ -477,3 +477,32 @@ namespace Skoruba.IdentityServer4.Admin.Api.IntegrationTests.Tests
         }
     }
 }
+        [Fact]
+        public async Task ResetPasswordByEmail_InvalidEmail_ReturnsBadRequest()
+        {
+            // Arrange
+            var invalidEmail = "invalid.email";
+            var request = new UserResetTokenByEmailApiDto { Email = invalidEmail };
+
+            // Act
+            var response = await Client.PutAsync("api/users/ResetTokenByEmail", 
+                new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task ResetPasswordByEmail_ValidEmail_ReturnsOk()
+        {
+            // Arrange
+            var validEmail = "test@example.com";
+            var request = new UserResetTokenByEmailApiDto { Email = validEmail };
+
+            // Act
+            var response = await Client.PutAsync("api/users/ResetTokenByEmail", 
+                new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
