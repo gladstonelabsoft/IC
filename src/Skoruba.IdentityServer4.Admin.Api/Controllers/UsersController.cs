@@ -690,7 +690,7 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
 
         private async Task<TUser> CreateUserWithPasswordAsync(string email, string password)
         {
-            var newUser = new TUser
+            var newUser = new IdentityUser<TKey>
             {
                 UserName = email,
                 Email = email,
