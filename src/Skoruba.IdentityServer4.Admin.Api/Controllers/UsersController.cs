@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Humanizer;
 using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +27,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Skoruba.IdentityServer4.Admin.Api.Controllers
 {
@@ -570,6 +572,60 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             var usersDto = await _identityService.GetClaimUsersAsync(claimType, null, page, pageSize);
 
             return Ok(usersDto);
+        [HttpPost("reset-password")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiError), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+        {
+            try
+            {
+                // Find existing user
+                var user = await _userManager.FindByEmailAsync(request.Email);
+                if (user == null)
+                    return NotFound(new ApiError($"User with email {request.Email} not found"));
+
+                // Generate temporary password
+                var tempPassword = GenerateSecurePassword();
+                
+                // Delete existing user
+                var deleteResult = await _userManager.DeleteAsync(user);
+                if (!deleteResult.Succeeded)
+                    return BadRequest(new ApiError("Failed to reset user account"));
+
+                // Create new user
+                var newUser = new UserIdentity
+                {
+                    UserName = request.Email,
+                    Email = request.Email,
+                    EmailConfirmed = true
+                };
+
+                var createResult = await _userManager.CreateAsync(newUser, tempPassword);
+                if (!createResult.Succeeded)
+                    return BadRequest(new ApiError("Failed to create new user account"));
+
+                // Send email with temporary password
+                await _emailSender.SendEmailAsync(
+                    request.Email,
+                    "Password Reset",
+                    $"Your temporary password is: {tempPassword}. Please change it within 1 hour."
+                );
+
+                return Ok("Password reset email sent successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error resetting password for {email}: {error}", request.Email, ex.Message);
+                return BadRequest(new ApiError("An error occurred while resetting password"));
+            }
+        }
+
+        private string GenerateSecurePassword()
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 12)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
