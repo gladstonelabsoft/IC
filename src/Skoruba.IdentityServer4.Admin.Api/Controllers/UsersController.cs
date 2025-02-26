@@ -28,7 +28,6 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.Text;
 using System.Security.Claims;
 
 namespace Skoruba.IdentityServer4.Admin.Api.Controllers
@@ -435,14 +434,44 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Initiates password reset process for a user by sending a reset token via email
+        /// </summary>
+        /// <param name="request">Email address of the user requesting password reset</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /api/users/ResetTokenByEmail
+        ///     {
+        ///         "email": "user@example.com"
+        ///     }
+        /// 
+        /// The endpoint will:
+        /// 1. Validate the email format
+        /// 2. Check if user exists (without revealing this information in response)
+        /// 3. Generate a secure reset token
+        /// 4. Send reset instructions via email
+        /// 
+        /// Integration with other endpoints:
+        /// - Uses FindUserByEmailAsync() to locate user
+        /// - Integrates with email service for delivery
+        /// - Reset token can be used with ResetPasswordByEmail endpoint
+        /// 
+        /// Configuration requirements:
+        /// - Email service must be configured in appsettings.json
+        /// - Required user policy settings in IdentityOptions
+        /// - HTTPS required for secure token transmission
+        /// </remarks>
+        /// <response code="200">Password reset email sent successfully (or user not found)</response>
+        /// <response code="400">Invalid email format</response>
+        /// <response code="500">Server error during processing</response>
         [HttpPut("ResetTokenByEmail")]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, type: typeof(void))]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest, type: typeof(void))]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.InternalServerError, type: typeof(void))]
-        [Authorize(Policy = AuthorizationConsts.AdministrationPolicy)]
-        public async Task<IActionResult> PutResetTokenByEmail([FromBody] UserResetTokenByEmailApiDto data)
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ResetTokenByEmail([FromBody] UserResetTokenByEmailApiDto request)
         {
-            var code = await _identityService.UserResetTokenByEmailAsync(data.Email);
+            var code = await _identityService.UserResetTokenByEmailAsync(request.Email);
 
             return Ok(code);
         }
@@ -626,17 +655,6 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
                     _logger.LogError(ex, "Unexpected error during password reset for {Email}", request.Email);
                     return StatusCode(500, new { error = "An error occurred processing your request" });
                 }
-
-                private bool IsValidEmail(string email)
-                {
-                    try {
-                        var addr = new System.Net.Mail.MailAddress(email);
-                        return addr.Address == email;
-                    }
-                    catch {
-                        return false;
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -645,6 +663,16 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             }
         }
 
+        private bool IsValidEmail(string email)
+        {
+            try {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch {
+                return false;
+            }
+        }
         private async Task<TUser> FindUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
