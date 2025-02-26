@@ -29,6 +29,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.Claims;
 
 namespace Skoruba.IdentityServer4.Admin.Api.Controllers
 {
@@ -572,6 +573,7 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             var usersDto = await _identityService.GetClaimUsersAsync(claimType, null, page, pageSize);
 
             return Ok(usersDto);
+        }
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiError), (int)HttpStatusCode.BadRequest)]
@@ -581,10 +583,10 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
             {
                 // Find and validate user
                 var user = await FindUserByEmailAsync(request.Email);
-                
+
                 // Generate temporary password
                 var tempPassword = GenerateSecurePassword();
-                
+
                 // Delete existing user
                 await DeleteUserAsync(user);
 
@@ -643,38 +645,70 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
 
         private string GenerateSecurePassword()
         {
-            const string uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-            const string numericChars = "0123456789";
-            const string specialChars = "!@#$%^&*";
-
-            var random = new Random();
-            var password = new StringBuilder();
-
-            // Ensure at least one of each type
-            password.Append(uppercaseChars[random.Next(uppercaseChars.Length)]);
-            password.Append(lowercaseChars[random.Next(lowercaseChars.Length)]);
-            password.Append(numericChars[random.Next(numericChars.Length)]);
-            password.Append(specialChars[random.Next(specialChars.Length)]);
-
-            // Fill remaining length with random chars
-            var allChars = uppercaseChars + lowercaseChars + numericChars + specialChars;
-            for (int i = 4; i < 16; i++)
+            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
             {
-                password.Append(allChars[random.Next(allChars.Length)]);
-            }
+                const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const string lowercase = "abcdefghijklmnopqrstuvwxyz";
+                const string digits = "0123456789";
+                const string specialChars = "!@#$%^&*";
 
-            // Shuffle the password
-            return new string(password.ToString().ToCharArray().OrderBy(x => random.Next()).ToArray());
+                var password = new StringBuilder();
+                var allChars = uppercase + lowercase + digits + specialChars;
+                var bytes = new byte[4096];
+
+                // Ensure at least one of each required char type
+                password.Append(GetRandomChar(uppercase, rng));
+                password.Append(GetRandomChar(lowercase, rng));
+                password.Append(GetRandomChar(digits, rng));
+                password.Append(GetRandomChar(specialChars, rng));
+
+                // Fill remaining length with random chars
+                while (password.Length < 16)
+                {
+                    password.Append(GetRandomChar(allChars, rng));
+                }
+
+                // Shuffle the password
+                return new string(password.ToString()
+                    .ToCharArray()
+                    .OrderBy(x => GetNextInt32(rng))
+                    .ToArray());
+            }
+        }
+
+        private char GetRandomChar(string chars, System.Security.Cryptography.RNGCryptoServiceProvider rng)
+        {
+            var bytes = new byte[4];
+            rng.GetBytes(bytes);
+            var result = BitConverter.ToInt32(bytes, 0);
+            return chars[Math.Abs(result) % chars.Length];
+        }
+
+        private int GetNextInt32(System.Security.Cryptography.RNGCryptoServiceProvider rng)
+        {
+            var bytes = new byte[4];
+            rng.GetBytes(bytes);
+            return BitConverter.ToInt32(bytes, 0);
         }
 
         private async Task SetPasswordExpirationAsync(TUser user)
         {
-            var expirationClaim = new Claim("PasswordExpiration", 
-                DateTime.UtcNow.AddHours(1).ToString("O"), 
-                ClaimValueTypes.DateTime);
+            // Remove any existing password expiration claims
+            var existingClaims = await _userManager.GetClaimsAsync(user);
+            var expirationClaim = existingClaims.FirstOrDefault(c => c.Type == "PasswordExpiration");
+            if (expirationClaim != null)
+            {
+                await _userManager.RemoveClaimAsync(user, expirationClaim);
+            }
 
-            await _userManager.AddClaimAsync(user, expirationClaim);
+            // Add new expiration claim
+            var newExpirationClaim = new System.Security.Claims.Claim(
+                "PasswordExpiration",
+                DateTime.UtcNow.AddHours(1).ToString("O"),
+                ClaimValueTypes.DateTime
+            );
+
+            await _userManager.AddClaimAsync(user, newExpirationClaim);
         }
     }
 }
