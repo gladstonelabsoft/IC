@@ -584,24 +584,24 @@ namespace Skoruba.IdentityServer4.Admin.Api.Controllers
                 // Find and validate user
                 var user = await FindUserByEmailAsync(request.Email);
 
-                // Generate temporary password
-                var tempPassword = GenerateSecurePassword();
+                // Generate reset token and URL
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetLink = $"{Request.Scheme}://{Request.Host}/reset-password?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(user.Email)}";
 
-                // Delete existing user
-                await DeleteUserAsync(user);
+                // Generate email content
+                var emailSubject = ApiTranslateResource.ResetPasswordTitle;
+                var emailBody = EmailTemplates.GetPasswordResetTemplate(resetLink);
 
-                // Create new user with same email
-                var newUser = await CreateUserWithPasswordAsync(request.Email, tempPassword);
-
-                // Set password expiration
-                await SetPasswordExpirationAsync(newUser);
-
-                // Send email with temporary password
-                await _emailSender.SendEmailAsync(
-                    request.Email,
-                    "Password Reset",
-                    $"Your temporary password is: {tempPassword}. Please change it within 1 hour."
-                );
+                try 
+                {
+                    await _emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
+                    _logger.LogInformation("Password reset email sent to {Email}", user.Email);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send password reset email to {Email}", user.Email);
+                    throw new UserFriendlyErrorPageException("Failed to send password reset email. Please try again later.");
+                }
 
                 return Ok("Password reset email sent successfully");
             }
